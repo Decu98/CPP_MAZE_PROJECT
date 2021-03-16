@@ -1,6 +1,8 @@
 #ifndef MAZE_H
 #define MAZE_H
 
+#include <iostream>
+#include <time.h>
 
 class Maze
 {
@@ -18,6 +20,7 @@ public:
     bool isEnd(int **,int);
     int getX(){return x_;}
     int getY(){return y_;}
+    void m_move(Maze *&, int **&,int);
 };
 
 #endif // MAZE_H
