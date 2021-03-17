@@ -2,7 +2,8 @@
 #define MAZE_H
 
 #include <iostream>
-#include <time.h>
+#include <ctime>
+#include "pool.h"
 
 class Maze
 {
@@ -20,7 +21,8 @@ public:
     bool isEnd(int **,int);
     int getX(){return x_;}
     int getY(){return y_;}
-    void m_move(Maze *&, int **&,int);
+    void Generate(Maze *&,int);
+    void Show(int **,int);
 };
 
 #endif // MAZE_H

@@ -25,11 +25,7 @@ bool Maze::isEnd(int **pool,int w){
     if(y-2 > -1){
         N = pool[x][y-2];
     }
-    if(N == 1 && E == 1 && S == 1 && W == 1){
-        return true;
-    }else{
-        return false;
-    }
+    return N == 1 && E == 1 && S == 1 && W == 1;
 }
 
 void Maze::setPrev(Maze *prev){
@@ -40,15 +36,19 @@ void Maze::setNext(Maze *next){
     next_ = next;
 }
 
-void Maze::m_move(Maze *&maze, int **&pool,int W){
+void Maze::Generate(Maze *&maze,int W){
     int way = rand()%4;
+    int **pool = pool_generate(W+1,maze->getX(),maze->getY());
     int i = 0,x = maze->getX(),y = maze->getY();
     do{
         while(maze->isEnd(pool,W)){
             if(maze->getPrev() != nullptr){
-               maze = maze->getPrev();
+                maze = maze->getPrev();
+                delete maze->getNext();
             }else{
                 i = 1;
+                way = 4;
+                delete maze;
                 break;
             }
         }
@@ -77,7 +77,6 @@ void Maze::m_move(Maze *&maze, int **&pool,int W){
             }
         }
         if(pool[x][y] == 0){
-            //cout << maze->getX() << " " << maze->getY() << endl;
             Maze *next = new Maze(x,y,nullptr,maze);
             maze->setNext(next);
             pool[x][y] = 1;
@@ -86,6 +85,10 @@ void Maze::m_move(Maze *&maze, int **&pool,int W){
         }
         way = rand()%4;
     }while(i  != 1);
+    maze->Show(pool,W);
+}
+
+void Maze::Show(int **pool,int W){
     for(int i = 0 ; i < W+1; i++){
         for(int j = 0 ; j < W+1; j++){
             cout.width(2);
