@@ -1,5 +1,6 @@
 #include "pool.h"
 
+//Generowanie macierzy zapisujacej labirynt
 int **pool_generate(int W,int H, int sx, int sy){
     int **pool = new int*[W*2];
 
@@ -15,6 +16,7 @@ int **pool_generate(int W,int H, int sx, int sy){
     return pool;
 }
 
+//Zapis labiryntu do pliku
 void save_maze(int **show, int W, int H){
     char ans;
     std::cout << "Do you want to save (yes = y, no = n): ";

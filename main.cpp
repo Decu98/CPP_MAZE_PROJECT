@@ -14,6 +14,7 @@ int main()
 
 }
 
+//Test sprawdzajacy kazdy mozliwy rozmiar labiryntu
 void test(){
     int a = 1;
     for(int i = 5; i < 50; i++){

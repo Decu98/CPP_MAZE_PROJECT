@@ -2,6 +2,8 @@
 
 using namespace std;
 
+
+//Konstruktor
 Maze::Maze(int x, int y, Maze *next, Maze *prev)
 {
     x_ = x;
@@ -10,6 +12,7 @@ Maze::Maze(int x, int y, Maze *next, Maze *prev)
     prev_ = prev;
 }
 
+//Sprawdza czy ma wolne pola wokół
 bool Maze::isEnd(int **pool,int w, int h){
     int x = this->getX(), y = this->getY(),
             E = 1, W = 1, S = 1, N = 1;
@@ -28,6 +31,7 @@ bool Maze::isEnd(int **pool,int w, int h){
     return N != 0 && E != 0 && S != 0 && W != 0;
 }
 
+//Funkcje listy
 void Maze::setPrev(Maze *prev){
     prev_ = prev;
 }
@@ -36,6 +40,7 @@ void Maze::setNext(Maze *next){
     next_ = next;
 }
 
+//Zabudowanie labiryntu
 void Maze::Buildings(int **&pool, int W, int H,int prct){
     if(prct != 0){
         int r_x, r_y;
@@ -47,6 +52,7 @@ void Maze::Buildings(int **&pool, int W, int H,int prct){
     }
 }
 
+//Wejscie i wyjscie do labiryntu
 void Maze::Opening(int **&pool, int W, int H, int in, int out){
     int i_x, o_x;
     for(int i = 0; i < in;i++){
@@ -62,6 +68,7 @@ void Maze::Opening(int **&pool, int W, int H, int in, int out){
 
 }
 
+//Generowanie labiryntu z uzyciem listy
 void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out,bool Test){
     int way = rand()%4;
     int **pool = pool_generate(W+1,H+1,maze->getX(),maze->getY());
@@ -123,6 +130,7 @@ void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out,bool Tes
     delete [] pool;
 }
 
+//Pokazanie labiryntu,wejsc, wyjsc i zabudowania w konsoli
 void Maze::Show(int **pool,int W,int H){
     for(int i = 0 ; i < W*2+1; i++){
         for(int j = 0 ; j < H*2+1; j++){
@@ -141,6 +149,7 @@ void Maze::Show(int **pool,int W,int H){
     }
 }
 
+//Inicjalizacja wraz z interfejsem i wejsciowymi danymi
 void Maze::init(Maze *&start){
     int W,H,prct,in,out;
     cout << "Set hight of maze (5,50): ";
