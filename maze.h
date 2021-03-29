@@ -2,7 +2,9 @@
 #define MAZE_H
 
 #include <ctime>
-#include "pool.h"
+#include <iostream>
+
+using namespace std;
 
 class Maze
 {
@@ -20,8 +22,7 @@ public:
     bool isEnd(int **,int,int);
     int getX(){return x_;}
     int getY(){return y_;}
-    void init(Maze *&);
-    void Generate(Maze *&,int,int,int,int,int,bool);
+    void Generate(Maze *&,int,int,int,int,int,int **&);
     void Show(int **,int,int);
     void Buildings(int **&,int,int,int);
     void Opening(int **&,int,int,int,int);

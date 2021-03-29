@@ -4,10 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Labirynth.cpp \
         main.cpp \
-        maze.cpp \
-        pool.cpp
+        maze.cpp
 
 HEADERS += \
-    maze.h \
-    pool.h
+    Labirynth.h \
+    maze.h

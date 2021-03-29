@@ -69,9 +69,8 @@ void Maze::Opening(int **&pool, int W, int H, int in, int out){
 }
 
 //Generowanie labiryntu z uzyciem listy
-void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out,bool Test){
+void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out, int **&pool){
     int way = rand()%4;
-    int **pool = pool_generate(W+1,H+1,maze->getX(),maze->getY());
     int i = 0,x = maze->getX(),y = maze->getY();
     maze->Buildings(pool,W,H,prct);
     do{
@@ -120,14 +119,7 @@ void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out,bool Tes
         way = rand()%4;
     }while(i  != 1);
     maze->Opening(pool,W,H,in,out);
-    if(Test){
-        maze->Show(pool,W,H);
-        save_maze(pool,W,H);
-    }
-    for(int i = 0; i < W*2; i++){
-        delete [] pool[i];
-    }
-    delete [] pool;
+    maze->Show(pool,W,H);
 }
 
 //Pokazanie labiryntu,wejsc, wyjsc i zabudowania w konsoli
@@ -149,52 +141,6 @@ void Maze::Show(int **pool,int W,int H){
     }
 }
 
-//Inicjalizacja wraz z interfejsem i wejsciowymi danymi
-void Maze::init(Maze *&start){
-    int W,H,prct,in,out;
-    cout << "Set hight of maze (5,50): ";
-    cin >> H;
-    while(H < 5 || H > 50){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong width, set again: ";
-        cin >> H;
-    }
-    cout << "Set width of maze (5,50): ";
-    cin >> W;
-    while(W < 5 || W > 50){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong hight, set again: ";
-        cin >> W;
-    }
-    cout << "Set percentage of blocked maze (0-50): ";
-    cin >> prct;
-    while(prct < 0 || prct > 50){
-    cin.clear();
-    cin.clear();
-    cin.ignore();
-        cout << "Wrong percentage, set again: ";
-        cin >> prct;
-    }
-    cout << "Set numbers of entrances " << "(1-" << W/5 << "): ";
-    cin >> in;
-    while(in < 1 || in > (W/5)){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong numbers of entrances, set again: ";
-        cin >> in;
-    }
-    cout << "Set numbers of exites " << "(1-" << W/5 << "): ";
-    cin >> out;
-    while(out < 1 || out > (W/5)){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong numbers of exites, set again: ";
-        cin >> out;
-    }
-    start->Generate(start,H,W,prct,in,out,true);
-}
 
 
 
