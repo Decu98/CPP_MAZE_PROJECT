@@ -16,7 +16,6 @@ public:
     Maze(int,int,Maze*,Maze*);
     Maze *getPrev(){return prev_;}
     Maze *getNext(){return next_;}
-    Maze &getThis(){return *this;}
     void setPrev(Maze *);
     void setNext(Maze *);
     bool isEnd(int **,int,int);
@@ -26,6 +25,11 @@ public:
     void Show(int **,int,int);
     void Buildings(int **&,int,int,int);
     void Opening(int **&,int,int,int,int);
+    void moveTop(Maze *&,int**&);
+    void moveBottom(Maze *&,int**&,int);
+    void moveLeft(Maze *&,int**&);
+    void moveRight(Maze *&,int**&,int);
+    void nextStep(Maze *&,int,int);
 };
 
 #endif // MAZE_H

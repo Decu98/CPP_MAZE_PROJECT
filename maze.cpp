@@ -71,7 +71,7 @@ void Maze::Opening(int **&pool, int W, int H, int in, int out){
 //Generowanie labiryntu z uzyciem listy
 void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out, int **&pool){
     int way = rand()%4;
-    int i = 0,x = maze->getX(),y = maze->getY();
+    int i = 0;
     maze->Buildings(pool,W,H,prct);
     do{
         while(maze->isEnd(pool,W,H)){
@@ -85,39 +85,22 @@ void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out, int **&
                 break;
             }
         }
-        if(way == 0 && maze->getY()-1 > 0){
-            if(pool[2*maze->getX()][2*(maze->getY()-1)] == 0){
-                x = maze->getX();
-                y = maze->getY()-1;
-            }
-        }
-        else if(way == 1 && maze->getX()+1 < W){
-            if(pool[2*(maze->getX()+1)][2*maze->getY()] == 0){
-                x = maze->getX()+1;
-                y = maze->getY();
-            }
-        }
-        else if(way == 2 && maze->getY()+1 < H){
-            if(pool[2*maze->getX()][2*(maze->getY()+1)] == 0){
-                x = maze->getX();
-                y = maze->getY()+1;
-            }
-        }
-        else if(way == 3 && maze->getX()-1 > 0){
-            if(pool[2*(maze->getX()-1)][2*maze->getY()] == 0){
-                x = maze->getX()-1;
-                y = maze->getY();
-            }
-        }
-        if(pool[2*x][2*y] == 0){
-            Maze *next = new Maze(x,y,nullptr,maze);
-            maze->setNext(next);
-            pool[2*x][2*y] = 1;
-            pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
-            maze = maze->getNext();
+        switch(way){
+        case 0 :
+            maze->moveTop(maze,pool);
+            break;
+        case 1 :
+            maze->moveRight(maze,pool,W);
+            break;
+        case 2 :
+            maze->moveBottom(maze,pool,H);
+            break;
+        case 3 :
+            maze->moveLeft(maze,pool);
+            break;
         }
         way = rand()%4;
-    }while(i  != 1);
+    }while(i != 1);
     maze->Opening(pool,W,H,in,out);
     maze->Show(pool,W,H);
 }
@@ -139,6 +122,68 @@ void Maze::Show(int **pool,int W,int H){
         }
         cout << endl;
     }
+}
+
+void Maze::moveBottom(Maze *&maze, int **&pool, int Height){
+    if(maze->getY()+1 < Height){
+        if(pool[2*maze->getX()][2*(maze->getY()+1)] == 0){
+            int x = maze->getX();
+            int y = maze->getY()+1;
+            if(pool[2*x][2*y] == 0){
+                pool[2*x][2*y] = 1;
+                pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
+                maze->nextStep(maze,x,y);
+            }
+        }
+    }
+}
+
+void Maze::moveTop(Maze *&maze, int **&pool){
+    if(maze->getY()-1 > 0){
+        if(pool[2*maze->getX()][2*(maze->getY()-1)] == 0){
+            int x = maze->getX();
+            int y = maze->getY()-1;
+            if(pool[2*x][2*y] == 0){
+                pool[2*x][2*y] = 1;
+                pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
+                maze->nextStep(maze,x,y);
+            }
+        }
+    }
+}
+
+void Maze::moveLeft(Maze *&maze, int **&pool){
+    if(maze->getX()-1 > 0){
+        if(pool[2*(maze->getX()-1)][2*maze->getY()] == 0){
+            int x = maze->getX()-1;
+            int y = maze->getY();
+            if(pool[2*x][2*y] == 0){
+                pool[2*x][2*y] = 1;
+                pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
+                maze->nextStep(maze,x,y);
+            }
+        }
+    }
+}
+
+void Maze::moveRight(Maze *&maze, int **&pool, int Width){
+    if(maze->getX()+1 < Width){
+        if(pool[2*(maze->getX()+1)][2*maze->getY()] == 0){
+            int x = maze->getX()+1;
+            int y = maze->getY();
+            if(pool[2*x][2*y] == 0){
+                pool[2*x][2*y] = 1;
+                pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
+                maze->nextStep(maze,x,y);
+            }
+        }
+    }
+}
+
+void Maze::nextStep(Maze *&maze, int x, int y ){
+    Maze *next = new Maze(x,y,nullptr,maze);
+    maze->setNext(next);
+    maze = maze->getNext();
 }
 
 

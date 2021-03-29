@@ -2,48 +2,11 @@
 
 Labirynth::Labirynth(){
     this->maze_ = new Maze(1,1,nullptr,nullptr);
-    int W,H,prct,in,out;
-    cout << "Set hight of maze (5,50): ";
-    cin >> H;
-    while(H < 5 || H > 50){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong width, set again: ";
-        cin >> H;
-    }
-    cout << "Set width of maze (5,50): ";
-    cin >> W;
-    while(W < 5 || W > 50){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong hight, set again: ";
-        cin >> W;
-    }
-    cout << "Set percentage of blocked maze (0-50): ";
-    cin >> prct;
-    while(prct < 0 || prct > 50){
-    cin.clear();
-    cin.clear();
-    cin.ignore();
-        cout << "Wrong percentage, set again: ";
-        cin >> prct;
-    }
-    cout << "Set numbers of entrances " << "(1-" << W/5 << "): ";
-    cin >> in;
-    while(in < 1 || in > (W/5)){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong numbers of entrances, set again: ";
-        cin >> in;
-    }
-    cout << "Set numbers of exites " << "(1-" << W/5 << "): ";
-    cin >> out;
-    while(out < 1 || out > (W/5)){
-        cin.clear();
-        cin.ignore();
-        cout << "Wrong numbers of exites, set again: ";
-        cin >> out;
-    }
+    int W = this->setWidth(),
+        H = this->setHeight(),
+        prct = this->setPercent(),
+        in = this->setEntrance(W),
+        out = this->setExites(W);
     this->pool_ = this->pool_generate(W+1,H+1,this->maze_->getX(),this->maze_->getY());
     this->maze_->Generate(this->maze_,H,W,prct,in,out,this->pool_);
     this->save_maze(pool_,W,H);
@@ -70,16 +33,16 @@ int **Labirynth::pool_generate(int W,int H, int sx, int sy){
 
 void Labirynth::save_maze(int **show, int W, int H){
     char ans;
-    std::cout << "Do you want to save (yes = y, no = n): ";
-    std::cin >> ans;
+    cout << "Do you want to save (yes = y, no = n): ";
+    cin >> ans;
     while(ans != 'y' && ans != 'n'){
-        std::cin.clear();
-        std::cin.ignore();
-        std::cout << "Wrong anwser, do you want to save (yes = y, no = n): ";
-        std::cin >> ans;
+        cin.clear();
+        cin.ignore();
+        cout << "Wrong anwser, do you want to save (yes = y, no = n): ";
+        cin >> ans;
     }
     if(ans == 'y'){
-        std::ofstream save;
+        ofstream save;
         save.open("Maze.txt");
         if(save.is_open()){
             for(int i = 0 ; i < W*2+1; i++){
@@ -95,11 +58,72 @@ void Labirynth::save_maze(int **show, int W, int H){
                         save << '#';
                     }
                 }
-                save << std::endl;
+                save << endl;
             }
         }
-        std::cout << "Saved!\n";
+        cout << "Saved!\n";
     }else if(ans == 'n'){
-        std::cout << "Done!\n";
+        cout << "Done!\n";
     }
+}
+
+int Labirynth::setWidth(){
+    cout << "Set width of maze (5,50): ";
+    cin >> Width_;
+    while(Width_ < 5 || Width_ > 50){
+        cin.clear();
+        cin.ignore();
+        cout << "Wrong hight, set again: ";
+        cin >> Width_;
+    }
+    return Width_;
+}
+
+int Labirynth::setHeight(){
+    cout << "Set hight of maze (5,50): ";
+    cin >> Height_;
+    while(Height_ < 5 || Height_ > 50){
+        cin.clear();
+        cin.ignore();
+        cout << "Wrong width, set again: ";
+        cin >> Height_;
+    }
+    return Height_;
+}
+
+int Labirynth::setPercent(){
+    cout << "Set percentage of blocked maze (0-50): ";
+    cin >> prct_;
+    while(prct_ < 0 || prct_ > 50){
+    cin.clear();
+    cin.clear();
+    cin.ignore();
+        cout << "Wrong percentage, set again: ";
+        cin >> prct_;
+    }
+    return prct_;
+}
+
+int Labirynth::setEntrance(int W){
+    cout << "Set numbers of entrances " << "(1-" << W/5 << "): ";
+    cin >> in_;
+    while(in_ < 1 || in_ > (W/5)){
+        cin.clear();
+        cin.ignore();
+        cout << "Wrong numbers of entrances, set again: ";
+        cin >> in_;
+    }
+    return in_;
+}
+
+int Labirynth::setExites(int W){
+    cout << "Set numbers of exites " << "(1-" << W/5 << "): ";
+    cin >> out_;
+    while(out_ < 1 || out_ > (W/5)){
+        cin.clear();
+        cin.ignore();
+        cout << "Wrong numbers of exites, set again: ";
+        cin >> out_;
+    }
+    return out_;
 }
