@@ -1,7 +1,7 @@
 #include "Labirynth.h"
 
 Labirynth::Labirynth(){
-    this->maze_ = new Maze(1,1,nullptr,nullptr);
+    this->maze_ = new Maze(1,1,nullptr,nullptr,nullptr,nullptr,nullptr);
     int W = this->setWidth(),
         H = this->setHeight(),
         prct = this->setPercent(),

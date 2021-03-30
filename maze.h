@@ -10,14 +10,18 @@ class Maze
 {
 private:
     int x_, y_;
-    Maze *next_,*prev_;
+    Maze *top_,*bottom_,*left_,*right_,*prev_;
 
 public:
-    Maze(int,int,Maze*,Maze*);
+    Maze(int,int,Maze*,Maze*,Maze*,Maze*,Maze*);
+    void del_Maze(Maze*);
     Maze *getPrev(){return prev_;}
-    Maze *getNext(){return next_;}
+    Maze *getTop(){return top_;}
+    Maze *getBottom(){return bottom_;}
+    Maze *getLeft(){return left_;}
+    Maze *getRight(){return right_;}
     void setPrev(Maze *);
-    void setNext(Maze *);
+    void setWay(Maze*,Maze*,Maze*,Maze*);
     bool isEnd(int **,int,int);
     int getX(){return x_;}
     int getY(){return y_;}
@@ -29,7 +33,6 @@ public:
     void moveBottom(Maze *&,int**&,int);
     void moveLeft(Maze *&,int**&);
     void moveRight(Maze *&,int**&,int);
-    void nextStep(Maze *&,int,int);
 };
 
 #endif // MAZE_H
