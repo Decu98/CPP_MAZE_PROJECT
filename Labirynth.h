@@ -14,6 +14,7 @@ private:
 
 public:
     Labirynth();
+    ~Labirynth();
     int **pool_generate(int,int,int,int);
     void save_maze(int **,int,int);
     int setWidth();

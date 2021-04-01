@@ -9,19 +9,19 @@ using namespace std;
 class Maze
 {
 private:
-    int x_, y_;
-    Maze *top_,*bottom_,*left_,*right_,*prev_;
+    int x_, y_, size_;
+    Maze *prev_,*next_;
 
 public:
-    Maze(int,int,Maze*,Maze*,Maze*,Maze*,Maze*);
-    void del_Maze(Maze*);
+    Maze(int);
+    Maze();
+    ~Maze();
+    void clearMemory(Maze*);
     Maze *getPrev(){return prev_;}
-    Maze *getTop(){return top_;}
-    Maze *getBottom(){return bottom_;}
-    Maze *getLeft(){return left_;}
-    Maze *getRight(){return right_;}
     void setPrev(Maze *);
     void setWay(Maze*,Maze*,Maze*,Maze*);
+    Maze *addNext(int,int);
+    void setXY(int,int);
     bool isEnd(int **,int,int);
     int getX(){return x_;}
     int getY(){return y_;}

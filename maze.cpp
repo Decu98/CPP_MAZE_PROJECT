@@ -4,35 +4,42 @@ using namespace std;
 
 
 //Konstruktor
-Maze::Maze(int x, int y, Maze *prev, Maze *top, Maze *bottom, Maze *left, Maze*right)
-{
-    x_ = x;
-    y_ = y;
-    prev_ = prev;
-    top_ = top;
-    bottom_ = bottom;
-    left_ = left;
-    right_ = right;
+Maze::Maze(){
+    x_ = 1;
+    y_ = 1;
+    size_ = 0;
+    prev_ = nullptr;
+    next_ = nullptr;
 }
 
-void Maze::del_Maze(Maze *current)
-{
-    if(current != nullptr)
-    {
-        del_Maze(current->getTop());
-        del_Maze(current->getBottom());
-        del_Maze(current->getLeft());
-        del_Maze(current->getRight());
+Maze::~Maze(){
+    for(int i = 0 ; i < size_; i++){
+        this->clearMemory(this->next_+i);
+    }
+    delete this;
+}
+
+void Maze::clearMemory(Maze *current){
+    for(int i = 0; i < size_; i++){
+        current->clearMemory(current->next_+1);
     }
     delete current;
-
 }
 
-void Maze::setWay(Maze *top, Maze *bottom, Maze *left, Maze*right){
-    top_ = top;
-    bottom_ = bottom;
-    left_ = left;
-    right_ = right;
+Maze *Maze::addNext(int x,int y){
+    if(next_){
+       Maze *next = next_+1;
+       next->setXY(x,y);
+       next->setPrev(this);
+       this->size_++;
+       return next;
+    }else{
+       this->next_ = new Maze();
+       this->next_->setXY(x,y);
+       this->next_->setPrev(this);
+       this->size_++;
+       return next_;
+    }
 }
 
 //Sprawdza czy ma wolne pola wokół
@@ -57,6 +64,11 @@ bool Maze::isEnd(int **pool,int w, int h){
 //Funkcje listy
 void Maze::setPrev(Maze *prev){
     prev_ = prev;
+}
+
+void Maze::setXY(int x, int y){
+    x_ = x;
+    y_ = y;
 }
 
 //Zabudowanie labiryntu
@@ -99,8 +111,6 @@ void Maze::Generate(Maze *&maze,int W, int H, int prct, int in, int out, int **&
             }else{
                 i = 1;
                 way = 4;
-                //Funkcja ktora usuwa drzewo
-                del_Maze(this);
                 break;
             }
         }
@@ -148,15 +158,14 @@ void Maze::Show(int **pool,int W,int H){
 }
 
 void Maze::moveBottom(Maze *&maze, int **&pool, int Height){
-    if(maze->getY()+1 < Height && maze->getBottom() == nullptr){
+    if(maze->getY()+1 < Height){
         if(pool[2*maze->getX()][2*(maze->getY()+1)] == 0){
             int x = maze->getX();
             int y = maze->getY()+1;
             if(pool[2*x][2*y] == 0){
                 pool[2*x][2*y] = 1;
                 pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
-                Maze *next = new Maze(x,y,maze,nullptr,nullptr,nullptr,nullptr);
-                maze->setWay(nullptr,next,nullptr,nullptr);
+                Maze *next = maze->addNext(x,y);
                 maze = next;
             }
         }
@@ -164,15 +173,14 @@ void Maze::moveBottom(Maze *&maze, int **&pool, int Height){
 }
 
 void Maze::moveTop(Maze *&maze, int **&pool){
-    if(maze->getY()-1 > 0 && maze->getTop() == nullptr){
+    if(maze->getY()-1 > 0){
         if(pool[2*maze->getX()][2*(maze->getY()-1)] == 0){
             int x = maze->getX();
             int y = maze->getY()-1;
             if(pool[2*x][2*y] == 0){
                 pool[2*x][2*y] = 1;
                 pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
-                Maze *next = new Maze(x,y,maze,nullptr,nullptr,nullptr,nullptr);
-                maze->setWay(next,nullptr,nullptr,nullptr);
+                Maze *next = maze->addNext(x,y);
                 maze = next;
             }
         }
@@ -180,15 +188,14 @@ void Maze::moveTop(Maze *&maze, int **&pool){
 }
 
 void Maze::moveLeft(Maze *&maze, int **&pool){
-    if(maze->getX()-1 > 0 && maze->getLeft() == nullptr){
+    if(maze->getX()-1 > 0){
         if(pool[2*(maze->getX()-1)][2*maze->getY()] == 0){
             int x = maze->getX()-1;
             int y = maze->getY();
             if(pool[2*x][2*y] == 0){
                 pool[2*x][2*y] = 1;
                 pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
-                Maze *next = new Maze(x,y,maze,nullptr,nullptr,nullptr,nullptr);
-                maze->setWay(nullptr,nullptr,next,nullptr);
+                Maze *next = maze->addNext(x,y);
                 maze = next;
             }
         }
@@ -196,15 +203,14 @@ void Maze::moveLeft(Maze *&maze, int **&pool){
 }
 
 void Maze::moveRight(Maze *&maze, int **&pool, int Width){
-    if(maze->getX()+1 < Width && maze->getRight() == nullptr){
+    if(maze->getX()+1 < Width){
         if(pool[2*(maze->getX()+1)][2*maze->getY()] == 0){
             int x = maze->getX()+1;
             int y = maze->getY();
             if(pool[2*x][2*y] == 0){
                 pool[2*x][2*y] = 1;
                 pool[(maze->getX()+x)][(maze->getY()+y)] = 1;
-                Maze *next = new Maze(x,y,maze,nullptr,nullptr,nullptr,nullptr);
-                maze->setWay(nullptr,nullptr,nullptr,next);
+                Maze *next = maze->addNext(x,y);
                 maze = next;
             }
         }
